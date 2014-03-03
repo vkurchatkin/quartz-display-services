@@ -1,5 +1,9 @@
 var services = require('bindings')('quartz_display_services');
 
+function getMainDisplay () {
+  return new Display(services.MainDisplayID());
+}
+
 function displays () {
   return services.GetActiveDisplayList().map(Display);
 }
@@ -44,4 +48,9 @@ function getBuiltin () {
   return this._displayId.IsBuiltin();
 }
 
+/**
+ * Exports
+ */
+
 exports.displays = displays;
+exports.getMainDisplay = getMainDisplay;

@@ -6,6 +6,16 @@
 
 using namespace v8;
 
+Handle <Value> MainDisplayID (const Arguments& args) {
+  HandleScope scope;
+
+  CGDirectDisplayID displayId = CGMainDisplayID();
+
+  DisplayWrap * display = DisplayWrap::New(displayId);
+
+  return scope.Close(display -> handle_);
+}
+
 Handle<Value> GetActiveDisplayList (const Arguments& args) {
   HandleScope scope;
 
@@ -32,6 +42,9 @@ Handle<Value> GetActiveDisplayList (const Arguments& args) {
 
 void init(Handle<Object> exports) {
   DisplayWrap::Init();
+
+  exports->Set(String::NewSymbol("MainDisplayID"),
+      FunctionTemplate::New(MainDisplayID)->GetFunction());
 
   exports->Set(String::NewSymbol("GetActiveDisplayList"),
       FunctionTemplate::New(GetActiveDisplayList)->GetFunction());
