@@ -1,8 +1,6 @@
 #include <node.h>
 #include <v8.h>
 #include <ApplicationServices/ApplicationServices.h>
-#include <stdio.h>
-#include "display_wrap.h"
 
 using namespace v8;
 
@@ -11,12 +9,10 @@ Handle <Value> MainDisplayID (const Arguments& args) {
 
   CGDirectDisplayID displayId = CGMainDisplayID();
 
-  DisplayWrap * display = DisplayWrap::New(displayId);
-
-  return scope.Close(display -> handle_);
+  return scope.Close(Integer::NewFromUnsigned(displayId));
 }
 
-Handle<Value> GetActiveDisplayList (const Arguments& args) {
+Handle <Value> GetActiveDisplayList (const Arguments& args) {
   HandleScope scope;
 
   uint32_t count;
@@ -30,9 +26,7 @@ Handle<Value> GetActiveDisplayList (const Arguments& args) {
   Local<Array> display_arr = Array::New(count);
 
   for (uint32_t i = 0; i < count; i ++) {
-    DisplayWrap * display = DisplayWrap::New(displays[i]);
-
-    display_arr -> Set(i, display -> handle_);
+    display_arr -> Set(i, Integer::NewFromUnsigned(displays[i]));
   }
 
   free(displays);
@@ -40,14 +34,56 @@ Handle<Value> GetActiveDisplayList (const Arguments& args) {
   return scope.Close(display_arr);
 }
 
-void init(Handle<Object> exports) {
-  DisplayWrap::Init();
+Handle <Value> DisplayIsActive (const Arguments& args) {
+  HandleScope scope;
 
+  CGDirectDisplayID displayId = (CGDirectDisplayID) args[0] -> Uint32Value();
+
+  return scope.Close(v8::Boolean::New(CGDisplayIsActive(displayId)));
+}
+
+Handle <Value> DisplayIsBuiltin (const Arguments& args) {
+  HandleScope scope;
+
+  CGDirectDisplayID displayId = (CGDirectDisplayID) args[0] -> Uint32Value();
+
+  return scope.Close(v8::Boolean::New(CGDisplayIsBuiltin(displayId)));
+}
+
+Handle <Value> DisplayPixelsHigh (const Arguments& args) {
+  HandleScope scope;
+
+  CGDirectDisplayID displayId = (CGDirectDisplayID) args[0] -> Uint32Value();
+
+  return scope.Close(Integer::New(CGDisplayPixelsHigh(displayId)));
+}
+
+Handle <Value> DisplayPixelsWide (const Arguments& args) {
+  HandleScope scope;
+
+  CGDirectDisplayID displayId = (CGDirectDisplayID) args[0] -> Uint32Value();
+
+  return scope.Close(Integer::New(CGDisplayPixelsWide(displayId)));
+}
+
+void init (Handle<Object> exports) {
   exports->Set(String::NewSymbol("MainDisplayID"),
       FunctionTemplate::New(MainDisplayID)->GetFunction());
 
   exports->Set(String::NewSymbol("GetActiveDisplayList"),
       FunctionTemplate::New(GetActiveDisplayList)->GetFunction());
+
+  exports->Set(String::NewSymbol("DisplayIsActive"),
+      FunctionTemplate::New(DisplayIsActive)->GetFunction());
+
+  exports->Set(String::NewSymbol("DisplayIsBuiltin"),
+      FunctionTemplate::New(DisplayIsBuiltin)->GetFunction());
+
+  exports->Set(String::NewSymbol("DisplayPixelsWide"),
+      FunctionTemplate::New(DisplayPixelsWide)->GetFunction());
+
+  exports->Set(String::NewSymbol("DisplayPixelsHigh"),
+      FunctionTemplate::New(DisplayPixelsHigh)->GetFunction());
 }
 
 NODE_MODULE(quartz_display_services, init)

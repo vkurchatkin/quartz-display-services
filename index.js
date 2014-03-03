@@ -1,11 +1,11 @@
-var services = require('bindings')('quartz_display_services');
+var CG = require('bindings')('quartz_display_services');
 
 function getMainDisplay () {
-  return new Display(services.MainDisplayID());
+  return new Display(CG.MainDisplayID());
 }
 
 function displays () {
-  return services.GetActiveDisplayList().map(Display);
+  return CG.GetActiveDisplayList().map(Display);
 }
 
 function Display (displayId) {
@@ -33,19 +33,19 @@ function toJSON () {
 }
 
 function getWidth () {
-  return this._displayId.PixelsWide();
+  return CG.DisplayPixelsWide(this._displayId);
 }
 
 function getHeight () {
-  return this._displayId.PixelsHigh();
+  return CG.DisplayPixelsHigh(this._displayId);
 }
 
 function getActive () {
-  return this._displayId.IsActive();
+  return CG.DisplayIsActive(this._displayId);
 }
 
 function getBuiltin () {
-  return this._displayId.IsBuiltin();
+  return CG.DisplayIsBuiltin(this._displayId);
 }
 
 /**
