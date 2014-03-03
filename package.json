@@ -1,6 +1,6 @@
 {
   "name": "quartz-display-services",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Quartz Display Services bindings",
   "main": "index.js",
   "author": "Vladimir Kurchatkin <vladimir.kurchatkin@gmail.com>",
