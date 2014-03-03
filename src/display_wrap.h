@@ -13,7 +13,7 @@ class DisplayWrap : public node::ObjectWrap {
     ~DisplayWrap();
 
     static v8::Persistent<v8::Function> constructor;
-    static v8::Handle<v8::Value> GetSize (const v8::Arguments& args);
+    static v8::Handle<v8::Value> ScreenSize (const v8::Arguments& args);
     static v8::Handle<v8::Value> PixelsHigh (const v8::Arguments& args);
     static v8::Handle<v8::Value> PixelsWide (const v8::Arguments& args);
     static v8::Handle<v8::Value> IsActive (const v8::Arguments& args);

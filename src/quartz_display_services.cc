@@ -19,7 +19,7 @@ Handle<Value> GetActiveDisplayList (const Arguments& args) {
 
   Local<Array> display_arr = Array::New(count);
 
-  for (int i = 0; i < count; i ++) {
+  for (uint32_t i = 0; i < count; i ++) {
     DisplayWrap * display = DisplayWrap::New(displays[i]);
 
     display_arr -> Set(i, display -> handle_);
