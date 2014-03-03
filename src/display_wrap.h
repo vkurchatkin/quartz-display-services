@@ -17,6 +17,7 @@ class DisplayWrap : public node::ObjectWrap {
     static v8::Handle<v8::Value> PixelsHigh (const v8::Arguments& args);
     static v8::Handle<v8::Value> PixelsWide (const v8::Arguments& args);
     static v8::Handle<v8::Value> IsActive (const v8::Arguments& args);
+    static v8::Handle<v8::Value> IsBuiltin (const v8::Arguments& args);
 
     CGDirectDisplayID displayId;
 };

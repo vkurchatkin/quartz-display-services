@@ -37,6 +37,9 @@ void DisplayWrap::Init() {
   tpl->PrototypeTemplate()->Set(String::NewSymbol("IsActive"),
       FunctionTemplate::New(IsActive)->GetFunction());
 
+  tpl->PrototypeTemplate()->Set(String::NewSymbol("IsBuiltin"),
+      FunctionTemplate::New(IsBuiltin)->GetFunction());
+
   constructor = Persistent<Function>::New(tpl->GetFunction());
 }
 
@@ -78,3 +81,13 @@ Handle <Value> DisplayWrap::IsActive (const v8::Arguments& args) {
 
   return scope.Close(v8::Boolean::New(CGDisplayIsActive(display -> displayId)));
 }
+
+Handle <Value> DisplayWrap::IsBuiltin (const v8::Arguments& args) {
+  HandleScope scope;
+
+  DisplayWrap * display = ObjectWrap::Unwrap <DisplayWrap> (args.This());
+
+  return scope.Close(v8::Boolean::New(CGDisplayIsBuiltin(display -> displayId)));
+}
+
+
