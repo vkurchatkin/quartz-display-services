@@ -12,7 +12,8 @@ function Display (displayId) {
 
 Object.defineProperties(Display.prototype, {
   width : { enumerable : true, get : getWidth },
-  height : { enumerable : true, get : getHeight }
+  height : { enumerable : true, get : getHeight },
+  active : { enumerable : true, get : getActive }
 });
 
 Display.prototype.toJSON = toJSON;
@@ -20,7 +21,8 @@ Display.prototype.toJSON = toJSON;
 function toJSON () {
   return {
     height : this.height,
-    width : this.width
+    width : this.width,
+    active : this.active
   }
 }
 
@@ -30,6 +32,10 @@ function getWidth () {
 
 function getHeight () {
   return this._displayId.PixelsHigh();
+}
+
+function getActive () {
+  return this._displayId.IsActive();
 }
 
 exports.displays = displays;
