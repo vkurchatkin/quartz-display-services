@@ -7,7 +7,8 @@ function displays () {
 function display (obj) {
   return {
     width : obj.getPixelsWide(),
-    height : obj.getPixelsHigh()
+    height : obj.getPixelsHigh(),
+    active : obj.IsActive()
   }
 }
 

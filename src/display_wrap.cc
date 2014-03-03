@@ -34,6 +34,9 @@ void DisplayWrap::Init() {
   tpl->PrototypeTemplate()->Set(String::NewSymbol("getPixelsWide"),
       FunctionTemplate::New(PixelsWide)->GetFunction());
 
+  tpl->PrototypeTemplate()->Set(String::NewSymbol("IsActive"),
+      FunctionTemplate::New(IsActive)->GetFunction());
+
   constructor = Persistent<Function>::New(tpl->GetFunction());
 }
 
@@ -66,4 +69,12 @@ Handle <Value> DisplayWrap::PixelsWide (const v8::Arguments& args) {
   DisplayWrap * display = ObjectWrap::Unwrap <DisplayWrap> (args.This());
 
   return scope.Close(Number::New(CGDisplayPixelsWide(display -> displayId)));
+}
+
+Handle <Value> DisplayWrap::IsActive (const v8::Arguments& args) {
+  HandleScope scope;
+
+  DisplayWrap * display = ObjectWrap::Unwrap <DisplayWrap> (args.This());
+
+  return scope.Close(v8::Boolean::New(CGDisplayIsActive(display -> displayId)));
 }
